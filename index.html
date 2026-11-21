@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrthoPaws Tycoon Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        },
+                        neon: {
+                            cyan: '#06b6d4',
+                            pink: '#ec4899',
+                            amber: '#f59e0b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #090d16;
+            color: #e2e8f0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+        }
+        .cyber-border {
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .cyber-border:focus-within {
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        .gradient-btn {
+            background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+            transition: all 0.3s ease;
+        }
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #047857 0%, #0369a1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #awb-print-modal, #awb-print-modal * { visibility: visible; }
+            #awb-print-modal { position: absolute; inset: 0; background: #fff; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <!-- Top Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-40 px-4 py-3 flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center space-x-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-shield-dog text-slate-950 text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">OrthoPaws Tycoon</h1>
+                <p class="text-xs text-slate-400 flex items-center">
+                    <span class="inline-block h-2 w-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                    Terminal Activ • Profit Net Live: <strong id="header-net-profit" class="text-emerald-400 ml-1">0 RON</strong>
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="switchTab('generator')" id="btn-tab-generator" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/50 text-emerald-300 border border-emerald-500/30 transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span class="hidden sm:inline">Generator</span>
+            </button>
+            <button onclick="switchTab('shipment')" id="btn-tab-shipment" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span class="hidden sm:inline">Shipment</span>
+            </button>
+            <button onclick="switchTab('tiktok')" id="btn-tab-tiktok" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all flex items-center space-x-1.5">
+                <i class="fa-brands fa-tiktok"></i>
+                <span class="hidden sm:inline">TikTok Studio</span>
+            </button>
+            <button onclick="switchTab('finance')" id="btn-tab-finance" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all flex items-center space-x-1.5">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="hidden sm:inline">Financiar</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
+
+        <!-- ======================================================= -->
+        <!-- [01] GENERATOR MAGAZIN                                  -->
+        <!-- ======================================================= -->
+        <section id="tab-generator" class="space-y-6">
+            <div class="glass-panel p-6 rounded-2xl glow-effect">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-store text-emerald-400 mr-3"></i>
+                            Generator Magazin Online
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Configurează produsul tău ortopedic și generează interfața de conversie</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Stare: Pregătit</span>
+                </div>
+
+                <form id="product-form" onsubmit="generateStore(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Nume Produs Ortopedic</label>
+                            <input type="text" id="prod-name" value="Pat Ortopedic MemoryFoam Pro" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Nume Brand Magazin</label>
+                            <input type="text" id="store-brand" value="OrthoPaws VetCare" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Preț Vânzare (RON)</label>
+                            <input type="number" id="prod-price" value="349" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Cost Achiziție + Ambalaj (COGS RON)</label>
+                            <input type="number" id="prod-cogs" value="110" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Beneficiu Principal (USP)</label>
+                        <input type="text" id="prod-usp" value="Spumă cu memorie ortopedică ce reduce presiunea articulară în 7 zile" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors text-sm">
+                    </div>
+
+                    <button type="submit" class="w-full gradient-btn text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-solid fa-code"></i>
+                        <span>GENEREAZĂ ȘI VALIDEAZĂ MAGAZINUL</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- PREVIZUALIZARE MAGAZIN GENERAT -->
+            <div id="store-preview-container" class="hidden space-y-4">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
+                    <i class="fa-solid fa-eye text-cyan-400 mr-2"></i>
+                    Previzualizare Magazin Generat (Live View)
+                </h3>
+
+                <div class="max-w-md mx-auto bg-slate-900 rounded-3xl p-4 border-4 border-slate-800 shadow-2xl">
+                    <div class="bg-emerald-600 text-white text-center py-1.5 text-[11px] font-bold rounded-t-lg mb-4">
+                        TRANSPORT GRATUIT PESTE 300 RON + 30 ZILE TESTARE
+                    </div>
+
+                    <div class="flex justify-between items-center px-2 mb-4">
+                        <span id="preview-brand-name" class="text-xl font-black text-rose-500 tracking-wider">OrthoPaws</span>
+                        <div class="bg-slate-800 px-3 py-1 rounded-full text-xs text-slate-300 flex items-center">
+                            <i class="fa-solid fa-cart-shopping text-emerald-400 mr-1.5"></i>
+                            Coș (<span id="cart-count">0</span>)
+                        </div>
+                    </div>
+
+                    <div class="h-48 bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl flex items-center justify-center relative overflow-hidden mb-4 border border-slate-600">
+                        <img id="preview-prod-img" src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=600&q=80" alt="Produs Ortopedic" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <span id="preview-prod-tag" class="bg-rose-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Bestseller Ortopedic</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 px-1">
+                        <h2 id="preview-prod-title" class="text-xl font-bold text-white">Pat Ortopedic MemoryFoam Pro</h2>
+                        <p id="preview-prod-usp" class="text-xs text-emerald-400 font-medium">Spumă cu memorie care elimină durerile articulare la câini</p>
+
+                        <div class="flex items-baseline space-x-2 pt-2">
+                            <span id="preview-prod-price" class="text-2xl font-black text-white">349 RON</span>
+                            <span id="preview-old-price" class="text-xs text-slate-500 line-through">499 RON</span>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 text-xs text-slate-300 space-y-1">
+                            <div class="flex items-center text-emerald-400 font-semibold">
+                                <i class="fa-solid fa-check mr-2"></i> Recomandat de medicii veterinari din România
+                            </div>
+                            <div class="flex items-center text-slate-400">
+                                <i class="fa-solid fa-truck mr-2"></i> Livrare rapidă în 24-48h prin curier național
+                            </div>
+                        </div>
+
+                        <button onclick="addToCart()" class="w-full bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 text-xs">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span>CUMPĂRĂ ACUM CU PLATA LA LIVRARE</span>
+                        </button>
+                    </div>
+
+                    <div class="text-center text-[10px] text-slate-500 mt-4 pt-2 border-t border-slate-800">
+                        Securizat prin Stripe & Integrat cu AWB Automat
+                    </div>
+                </div>
+
+                <div class="flex gap-3 max-w-md mx-auto">
+                    <button onclick="exportCode()" class="flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold py-3 rounded-xl transition-all text-xs flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-cloud-arrow-down text-emerald-400"></i>
+                        <span>Exportă Cod Sursă .HTML</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- [02] MODUL SHIPMENT & AWB                               -->
+        <!-- ======================================================= -->
+        <section id="tab-shipment" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl glow-cyan">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-truck-fast text-cyan-400 mr-3"></i>
+                            Modul Shipment & AWB Automat
+                        </h2>
+                        <p class="text-sm text-slate-400 mt-1">Gestionare comenzi, generare etichete AWB și status curierat în timp real</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">API Activ: FAN / Sameday</span>
+                </div>
+
+                <!-- 3 KPI Cards Shipment -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                        <span class="text-2xl font-bold text-white" id="orders-total">0</span>
+                        <p class="text-xs text-slate-400 mt-1">Comenzi Totale</p>
+                    </div>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                        <span class="text-2xl font-bold text-cyan-400" id="orders-transit">0</span>
+                        <p class="text-xs text-slate-400 mt-1">AWB-uri în Tranzit / Pregătire</p>
+                    </div>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                        <span class="text-2xl font-bold text-emerald-400" id="orders-delivered">0</span>
+                        <p class="text-xs text-slate-400 mt-1">Livrate cu Succes</p>
+                    </div>
+                </div>
+
+                <!-- Formular Emitere AWB -->
+                <form onsubmit="createOrderAWB(event)" class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 mb-6 space-y-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center">
+                        <i class="fa-solid fa-barcode mr-2"></i> Emitere Comandă & AWB Nou
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input type="text" id="awb-client" placeholder="Nume Client (ex: Andrei Pop)" required class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+                        <input type="text" id="awb-city" placeholder="Oraș & Adresă (ex: Cluj-Napoca)" required class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+                        <select id="awb-courier" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+                            <option value="FAN Courier">FAN Courier (22 RON)</option>
+                            <option value="Sameday Easybox">Sameday Easybox (16 RON)</option>
+                            <option value="Cargus">Cargus Express (19 RON)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <select id="awb-product" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"></select>
+                        <select id="awb-payment" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+                            <option value="Ramburs">Plată Ramburs (+5 RON)</option>
+                            <option value="Card">Plată Card Online (0 RON)</option>
+                        </select>
+                        <button type="submit" class="gradient-btn text-white font-bold py-2 px-4 rounded-lg text-xs flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>GENEREAZĂ AWB</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Tabel Comenzi & AWB -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 uppercase">
+                                <th class="py-2.5 px-2">AWB / ID</th>
+                                <th class="py-2.5 px-2">Client / Destinație</th>
+                                <th class="py-2.5 px-2">Produs</th>
+                                <th class="py-2.5 px-2">Curier & Cost</th>
+                                <th class="py-2.5 px-2">Valoare</th>
+                                <th class="py-2.5 px-2">Status</th>
+                                <th class="py-2.5 px-2 text-right">Etichetă</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body" class="div
